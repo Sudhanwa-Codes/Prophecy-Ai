@@ -1,0 +1,276 @@
+/* --- THEME: SPOOKY TERMINAL (DYNAMIC FULL SCREEN) --- */
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0c0c0c;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+/* --- THE MONITOR FRAME (Dynamic Full Screen Container) --- */
+.monitor-frame {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  background-image: url('../public/monitor_frame.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* --- THE APP SCREEN (Actual Terminal Content) --- */
+.App {
+  position: absolute;
+  top: 15%;
+  left: 25%;
+  width: 50%;
+  height: 65%;
+  background-color: #000000d0;
+  color: #00ff41;
+  font-family: 'Consolas', 'Monospace', monospace;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.8);
+  animation: flicker 1s infinite alternate;
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  100% { opacity: 0.97; }
+}
+
+/* --- TERMINAL SHAKE DURING CHAOS --- */
+.App.chaos-active {
+  animation: terminal-shake 0.15s infinite, flicker 1s infinite alternate;
+}
+
+@keyframes terminal-shake {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-2px, 1px); }
+  20% { transform: translate(2px, -1px); }
+  30% { transform: translate(-1px, 2px); }
+  40% { transform: translate(1px, -2px); }
+  50% { transform: translate(-2px, -1px); }
+  60% { transform: translate(2px, 1px); }
+  70% { transform: translate(-1px, -2px); }
+  80% { transform: translate(1px, 2px); }
+  90% { transform: translate(-2px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* --- CUSTOM SCROLLBAR STYLING (Black & Green) --- */
+.App::-webkit-scrollbar {
+  width: 10px;
+}
+
+.App::-webkit-scrollbar-track {
+  background: #000;
+}
+
+.App::-webkit-scrollbar-thumb {
+  background-color: #00ff41;
+  border-radius: 5px;
+  border: 1px solid #005517;
+}
+
+.App {
+  scrollbar-width: thin;
+  scrollbar-color: #00ff41 #000;
+}
+
+/* --- PER-CHARACTER SCATTER ANIMATION --- */
+.scatter-char {
+  display: inline-block;
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              opacity 0.6s ease-out;
+}
+
+/* Violent character scatter during chaos */
+.chaos-active .scatter-char {
+  animation: charScatter 0.4s infinite alternate;
+}
+
+@keyframes charScatter {
+  0% { 
+    transform: translate(0, 0) rotate(0deg) scale(1); 
+    opacity: 1; 
+  }
+  25% {
+    transform: translate(
+      calc((sin(var(--char-index, 0) * 0.5) * 40px)), 
+      calc((cos(var(--char-index, 0) * 0.7) * 35px))
+    ) rotate(calc(var(--char-index, 0) * 8deg)) scale(1.1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(
+      calc((cos(var(--char-index, 0) * 0.3) * -45px)), 
+      calc((sin(var(--char-index, 0) * 0.9) * 40px))
+    ) rotate(calc(var(--char-index, 0) * -12deg)) scale(0.9);
+    opacity: 0.5;
+  }
+  75% {
+    transform: translate(
+      calc((sin(var(--char-index, 0) * 1.2) * 35px)), 
+      calc((cos(var(--char-index, 0) * 0.4) * -30px))
+    ) rotate(calc(var(--char-index, 0) * 15deg)) scale(1.15);
+    opacity: 0.8;
+  }
+  100% { 
+    transform: translate(
+      calc((cos(var(--char-index, 0) * 0.8) * -50px)), 
+      calc((sin(var(--char-index, 0) * 1.5) * 45px))
+    ) rotate(calc(var(--char-index, 0) * -20deg)) scale(0.85);
+    opacity: 0.6;
+  }
+}
+
+/* Staggered animation timing for different elements */
+.chaos-active h1 .scatter-char {
+  animation-duration: 0.35s;
+}
+
+.chaos-active p .scatter-char {
+  animation-duration: 0.45s;
+}
+
+.chaos-active button .scatter-char {
+  animation-duration: 0.4s;
+}
+
+.chaos-active h2 .scatter-char {
+  animation-duration: 0.38s;
+}
+
+/* Ensure borders and layout containers stay still */
+.chaos-active .result-box,
+.chaos-active .query-box {
+  animation: none !important;
+}
+
+/* --- VIOLENT SCREEN SHAKE ANIMATION (Applied during laugh) --- */
+@keyframes screen-shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+.screen-vibrate {
+  animation: screen-shake 0.1s infinite;
+}
+
+/* --- Laughing Skull GIF Styling --- */
+.laughing-skull {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: auto;
+  opacity: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+@keyframes skull-fade-in {
+  from { opacity: 0; transform: translate(-50%, -40%) scale(0.8); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes skull-fade-out {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 0; transform: translate(-50%, -60%) scale(0.8); }
+}
+
+.skull-appear {
+  animation: skull-fade-in 0.3s ease-out forwards;
+}
+
+.skull-disappear {
+  animation: skull-fade-out 0.8s ease-in forwards;
+}
+
+/* --- REST OF STYLING --- */
+h1 {
+  font-size: 1.8em;
+  text-shadow: 0 0 5px #00ff41;
+  color: #00ff41;
+  margin-bottom: 20px;
+}
+
+.query-box {
+  margin-bottom: 25px;
+}
+
+textarea {
+  width: 100%;
+  height: 70px;
+  padding: 10px;
+  background-color: #000;
+  border: 1px solid #005517;
+  color: #00ff41;
+  font-family: inherit;
+  font-size: 1em;
+  resize: none;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #005517;
+  color: #00ff41;
+  border: 1px solid #00ff41;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: bold;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #00ff41;
+  color: #000;
+}
+
+.result-box {
+  border-top: 2px dashed #005517;
+  padding-top: 20px;
+}
+
+.result-section h2 {
+  color: #ff004c;
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+.output-text {
+  white-space: pre-wrap;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: rgba(0, 85, 23, 0.15);
+  border-left: 3px solid #00ff41;
+}
+
+.interpretation {
+  font-style: italic;
+  color: #ff0041;
+}
+
+.App p {
+  font-size: 0.9em;
+}
