@@ -39,13 +39,35 @@ def load_gopher_archive():
         return []
 
 def get_medium_persona_prompt():
-    """Loads the content of the Steering Document to be used as the LLM's system prompt."""
+    """Loads the FULL content of the Steering Document to be used as the LLM's system prompt."""
     try:
         with open('../.kiro/steering_docs/medium_persona.md', 'r') as f:
-            content = f.read()
-            return content.split('**Goal:**')[1].strip()
+            return f.read()  # Return everything, including all constraints
     except FileNotFoundError:
-        return "You are a weary, ancient digital medium. Your tone must be cryptic and archaic. Always start your interpretation with: 'Hark, the Gopher nexus coughs up a cipher...'"
+        return "You are a weary, ancient digital medium. Your tone must be cryptic and archaic. Always start your interpretation with: 'Hark, the Gopher nexus coughs up a cipher...' Maximum 85 words after the opening phrase."
+
+def enforce_word_limit(text, max_words=85):
+    """Ensures response doesn't exceed 85 words after opening phrase"""
+    opening = "Hark, the Gopher nexus coughs up a cipher..."
+    
+    if opening in text:
+        parts = text.split(opening, 1)
+        if len(parts) == 2:
+            body = parts[1].strip()
+            words = body.split()
+            
+            if len(words) > max_words:
+                truncated = ' '.join(words[:max_words])
+                return f"{opening}\n\n{truncated}..."
+        
+        return text
+    
+    # If opening phrase not found, still enforce limit on entire text
+    words = text.split()
+    if len(words) > max_words:
+        return ' '.join(words[:max_words]) + "..."
+    
+    return text
 
 # --- START: MCP Tool Implementation ---
 def search_gopher_archive(keyword: str) -> str:
@@ -97,6 +119,8 @@ The relevant information retrieved from the Gopher Archive by the search tool is
 {search_result}
 ---
 
+CRITICAL: Your response MUST NOT exceed 85 words after the opening phrase "Hark, the Gopher nexus coughs up a cipher...". Count carefully. Be concise.
+
 Use this retrieved information to formulate your haunting interpretation. You must synthesize the result into your narrative.
 """
     
@@ -114,7 +138,10 @@ Use this retrieved information to formulate your haunting interpretation. You mu
         
         # Ensure the opening phrase is present, as mandated by the Steering Doc
         if not interpretation_text.startswith("Hark, the Gopher nexus coughs up a cipher..."):
-            return "Hark, the Gopher nexus coughs up a cipher...\n\n" + interpretation_text
+            interpretation_text = "Hark, the Gopher nexus coughs up a cipher...\n\n" + interpretation_text
+        
+        # Enforce the 85-word limit strictly
+        interpretation_text = enforce_word_limit(interpretation_text, max_words=85)
             
         return interpretation_text
         
