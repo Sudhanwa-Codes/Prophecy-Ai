@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import html2canvas from 'html2canvas';
+import Sidebar from './components/Sidebar';
+import BadgeBox from './components/BadgeBox';
+import HintBox from './components/HintBox';
 
 // --- CONFIGURATION ---
 const BASE_VOLUME = 0.5;
@@ -192,7 +195,17 @@ function App() {
   const [recognition, setRecognition] = useState(null);
   const [showShareButtons, setShowShareButtons] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [prophecyHistory, setProphecyHistory] = useState([]);
+  const [unlockedBadges, setUnlockedBadges] = useState([]);
   const shareContainerRef = React.useRef(null);
+
+  // Load history and badges from localStorage on mount
+  useEffect(() => {
+    const history = JSON.parse(localStorage.getItem('prophecyHistory')) || [];
+    setProphecyHistory(history);
+    const badges = JSON.parse(localStorage.getItem('unlockedBadges')) || [];
+    setUnlockedBadges(badges);
+  }, []);
 
   useEffect(() => {
     controlMusicStart();
@@ -347,6 +360,65 @@ function App() {
     }, 500);
   };
 
+  const saveToHistory = (query, prophecy) => {
+    const newItem = {
+      id: Date.now(),
+      query: query,
+      cipher: prophecy.cryptic_response,
+      interpretation: prophecy.interpretation,
+      timestamp: new Date().toISOString()
+    };
+    const updatedHistory = [newItem, ...prophecyHistory].slice(0, 10);
+    setProphecyHistory(updatedHistory);
+    localStorage.setItem('prophecyHistory', JSON.stringify(updatedHistory));
+  };
+
+  const handleSelectProphecy = (item) => {
+    setResult({
+      cryptic_response: item.cipher,
+      interpretation: item.interpretation
+    });
+    setShowShareButtons(true);
+  };
+
+  const handleDeleteProphecy = (index) => {
+    const updatedHistory = prophecyHistory.filter((_, i) => i !== index);
+    setProphecyHistory(updatedHistory);
+    localStorage.setItem('prophecyHistory', JSON.stringify(updatedHistory));
+  };
+
+  const handleClearAll = () => {
+    setProphecyHistory([]);
+    localStorage.removeItem('prophecyHistory');
+  };
+
+  const showBadgePopup = (badgeName) => {
+    const popup = document.createElement('div');
+    popup.className = 'badge-popup';
+    popup.textContent = `Secret Discovered: ${badgeName.toUpperCase()}!`;
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 3000);
+  };
+
+  const checkAndUnlockBadges = (query) => {
+    const keywords = ['gopher', 'protocol', 'ancient', 'kiroween', 'kiro'];
+    const unlocked = [...unlockedBadges];
+    const newUnlocks = [];
+
+    keywords.forEach(keyword => {
+      if (query.toLowerCase().includes(keyword) && !unlocked.includes(keyword)) {
+        unlocked.push(keyword);
+        newUnlocks.push(keyword);
+      }
+    });
+
+    if (newUnlocks.length > 0) {
+      setUnlockedBadges(unlocked);
+      localStorage.setItem('unlockedBadges', JSON.stringify(unlocked));
+      newUnlocks.forEach(showBadgePopup);
+    }
+  };
+
 
 
   const handleCopyText = async () => {
@@ -446,6 +518,9 @@ function App() {
   const handleSeance = async () => {
     if (!query.trim()) return;
 
+    // Check for badge unlocks
+    checkAndUnlockBadges(query);
+
     // Disable microphone during prophecy
     setMicDisabled(true);
     setShowShareButtons(false);
@@ -476,6 +551,9 @@ function App() {
       }
 
       setResult(data);
+      
+      // Save to history
+      saveToHistory(query, data);
       
       // Stop chaos music when prophecy arrives
       stopChaosMusic();
@@ -511,6 +589,33 @@ function App() {
       <audio id="creepy-music" loop>
         <source src="/creepymusic.ogg" type="audio/ogg" />
       </audio>
+      
+      <Sidebar 
+        history={prophecyHistory}
+        onSelectProphecy={handleSelectProphecy}
+        onDeleteProphecy={handleDeleteProphecy}
+        onClearAll={handleClearAll}
+        className={loading ? 'shaking' : ''}
+      />
+      
+      <button 
+        className={`learn-btn ${loading ? 'shaking' : ''}`}
+        onClick={() => alert('Archive page coming soon!')}
+      >
+        <div className="learn-icon">📚</div>
+        <div className="learn-title">SEEK</div>
+        <div className="learn-subtitle">Elder Wisdom</div>
+      </button>
+      
+      <BadgeBox 
+        unlockedBadges={unlockedBadges}
+        className={loading ? 'shaking' : ''}
+      />
+      
+      <HintBox 
+        unlockedBadges={unlockedBadges}
+        className={loading ? 'shaking' : ''}
+      />
       
       <div className={`App ${loading ? 'chaos-active' : ''}`}>
         <h1>

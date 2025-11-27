@@ -1,0 +1,141 @@
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.confirm-modal {
+  background: rgba(0, 0, 0, 0.95);
+  border: 3px solid rgba(255, 0, 0, 0.6);
+  border-radius: 10px;
+  padding: 25px 30px;
+  max-width: 400px;
+  min-width: 350px;
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.5),
+              inset 0 0 20px rgba(255, 0, 0, 0.1);
+  animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+  from {
+    transform: scale(0.8) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.confirm-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 0, 0, 0.3);
+  padding-bottom: 12px;
+}
+
+.confirm-icon {
+  font-size: 24px;
+  filter: grayscale(1) brightness(0.8);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+.confirm-title {
+  color: #ff4444;
+  font-family: 'Courier New', monospace;
+  font-size: 20px;
+  margin: 0;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(255, 0, 0, 0.8),
+               0 0 20px rgba(255, 0, 0, 0.5);
+  font-weight: bold;
+}
+
+.confirm-message {
+  color: #ff8888;
+  font-family: 'Courier New', monospace;
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255, 0, 0, 0.05);
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  border-radius: 6px;
+  text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+}
+
+.confirm-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.confirm-btn {
+  flex: 1;
+  padding: 12px 20px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid;
+}
+
+.confirm-yes {
+  background: rgba(255, 0, 0, 0.2);
+  border-color: rgba(255, 0, 0, 0.6);
+  color: #ff4444;
+  text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+}
+
+.confirm-yes:hover {
+  background: rgba(255, 0, 0, 0.4);
+  border-color: rgba(255, 0, 0, 0.9);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5),
+              inset 0 0 10px rgba(255, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.confirm-no {
+  background: rgba(0, 255, 0, 0.1);
+  border-color: rgba(0, 255, 0, 0.4);
+  color: #00ff00;
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+}
+
+.confirm-no:hover {
+  background: rgba(0, 255, 0, 0.2);
+  border-color: rgba(0, 255, 0, 0.7);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.4),
+              inset 0 0 10px rgba(0, 255, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.confirm-btn:active {
+  transform: translateY(0);
+}

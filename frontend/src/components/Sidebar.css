@@ -1,0 +1,168 @@
+.history-sidebar {
+  position: fixed;
+  left: 3%;
+  top: 15%;
+  bottom: 15%;
+  width: 240px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid rgba(0, 255, 0, 0.4);
+  border-radius: 8px;
+  padding: 18px 15px;
+  overflow-y: auto;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3),
+              inset 0 0 15px rgba(0, 255, 0, 0.1);
+}
+
+.history-title {
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  margin: 0 0 15px 0;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+  letter-spacing: 1px;
+  font-weight: bold;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+.history-list {
+  margin-bottom: 10px;
+}
+
+.no-history {
+  color: #666;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  text-align: center;
+  font-style: italic;
+  margin: 20px 0;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 8px;
+  margin-bottom: 8px;
+  background: rgba(0, 50, 0, 0.3);
+  border: 2px solid rgba(0, 255, 0, 0.2);
+  border-radius: 6px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.history-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.15), transparent);
+  transition: left 0.5s;
+}
+
+.history-item:hover::before {
+  left: 100%;
+}
+
+.history-item:hover {
+  background: rgba(0, 100, 0, 0.5);
+  border-color: rgba(0, 255, 0, 0.6);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.4),
+              inset 0 0 10px rgba(0, 255, 0, 0.1);
+  transform: translateX(3px);
+}
+
+.history-query {
+  flex: 1;
+  color: #00cc00;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 8px;
+}
+
+.delete-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 0, 0, 0.4);
+  color: #ff4444;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+
+.delete-btn:hover {
+  background: rgba(255, 0, 0, 0.2);
+  border-color: rgba(255, 0, 0, 0.7);
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+}
+
+.clear-all-btn {
+  width: 100%;
+  margin-top: 15px;
+  background: rgba(255, 0, 0, 0.15);
+  border: 2px solid rgba(255, 0, 0, 0.4);
+  color: #ff4444;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  transition: all 0.3s;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.clear-all-btn:hover {
+  background: rgba(255, 0, 0, 0.3);
+  border-color: rgba(255, 0, 0, 0.8);
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.6),
+              inset 0 0 10px rgba(255, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.history-sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.history-sidebar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.history-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 0, 0.3);
+  border-radius: 4px;
+}
+
+.history-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 0, 0.5);
+}
+
+.history-sidebar.shaking {
+  animation: shake 0.3s infinite;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  10% { transform: translate(-3px, 3px) rotate(-1deg); }
+  20% { transform: translate(3px, -3px) rotate(1deg); }
+  30% { transform: translate(-3px, -3px) rotate(-1deg); }
+  40% { transform: translate(3px, 3px) rotate(1deg); }
+  50% { transform: translate(-3px, 3px) rotate(-1deg); }
+  60% { transform: translate(3px, -3px) rotate(1deg); }
+  70% { transform: translate(-3px, -3px) rotate(-1deg); }
+  80% { transform: translate(3px, 3px) rotate(1deg); }
+  90% { transform: translate(-3px, 3px) rotate(-1deg); }
+}

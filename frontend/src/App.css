@@ -594,3 +594,69 @@ button:hover {
     max-width: calc(100% - 20px);
   }
 }
+
+/* --- LEARN BUTTON STYLING --- */
+.learn-btn {
+  position: fixed;
+  top: 15%;
+  right: 5%;
+  width: 200px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid rgba(0, 255, 0, 0.4);
+  color: #00ff00;
+  padding: 18px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3),
+              inset 0 0 15px rgba(0, 255, 0, 0.1);
+}
+
+.learn-icon {
+  font-size: 32px;
+  filter: grayscale(1) brightness(0.7);
+  opacity: 0.8;
+  margin-bottom: 5px;
+  transition: all 0.3s;
+}
+
+.learn-title {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+  margin: 0;
+}
+
+.learn-subtitle {
+  font-size: 12px;
+  opacity: 0.7;
+  font-style: italic;
+  color: #00cc00;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.learn-btn:hover {
+  background: rgba(0, 50, 0, 0.7);
+  border-color: rgba(0, 255, 0, 0.8);
+  box-shadow: 0 0 25px rgba(0, 255, 0, 0.5),
+              inset 0 0 15px rgba(0, 255, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.learn-btn:hover .learn-icon {
+  filter: grayscale(0);
+  transform: scale(1.15);
+}
+
+.learn-btn.shaking {
+  animation: shake 0.3s infinite;
+}
