@@ -739,9 +739,13 @@ function App() {
         className={loading ? 'shaking' : ''}
       />
       
+      <div className="monitor-title">
+        <ScatteredText text="Prophecy-Ai" /> <span className="title-emoji">🔮</span>
+      </div>
+      
       <div className={`App ${loading ? 'chaos-active' : ''}`}>
         <h1>
-          <ScatteredText text="KIRO-WEEN: The Gopher Séance" />
+          <ScatteredText text="KIRO-WEEN: The Gopher Séance" /> 👻
         </h1>
         
         <p>

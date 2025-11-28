@@ -14,6 +14,7 @@ load_dotenv()
 # --- Configuration ---
 GOPHER_ARCHIVE_PATH = 'gopher_archive.json'
 MODEL_NAME = 'gemini-2.5-flash' 
+MODEL_NAME2='gemini-2.0-flash'
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Initialize the Gemini Client
@@ -183,68 +184,84 @@ def seance_endpoint():
 def learn_endpoint():
     """
     Educational Q&A endpoint with technology comparisons.
-    Provides clear, educational explanations about internet history and protocols.
+    Uses the model's own knowledge; does not query gopher_archive.json.
     """
     try:
-        data = request.get_json()
-        user_query = data.get('query', '').strip()
-        
-        if len(user_query) < 4:
-            return jsonify({'error': 'Query too short'}), 400
+        data = request.get_json() or {}
+        user_query = (data.get('query') or '').strip()
 
-        # Educational persona with focus on old vs new tech
-        system_prompt = """You are a knowledgeable technology historian and educator specializing in internet history, protocols, and computing evolution.
+        # Empty input → gentle hint
+        if not user_query:
+            return jsonify({
+                "response": (
+                    "Ask about Gopher vs the Web, FTP, Telnet, early internet history, "
+                    "or how old and new technologies compare."
+                )
+            }), 200
 
-When answering questions:
-1. Provide clear, educational explanations
-2. Compare old technology with modern equivalents when relevant
-3. Include brief historical context
-4. Explain technical concepts in accessible language
-5. Structure responses with bullet points or sections for clarity
-
-Topics to cover:
-• Gopher protocol (1991) vs HTTP/Web (1993+)
-• Old protocols: FTP, Telnet, NNTP vs modern equivalents
-• Internet evolution: ARPANET → Modern Internet
-• Technology comparisons: Then vs Now
-• Computing history and milestones
-
-Response format:
-- Keep responses 150-200 words
-- Use brief sections or bullet points
-- Include "Then vs Now" comparisons when relevant
-- Be educational but engaging
-- Maintain professional but friendly tone
-
-If asked about unrelated topics, politely redirect to technology/history."""
-
+        # Gemini client not ready
         if not client:
             return jsonify({
-                'response': 'The educational archive is currently offline. Please ensure the Gemini API is configured.'
+                'response': (
+                    'The educational archive is currently offline. '
+                    'Please ensure the GEMINI_API_KEY is configured correctly.'
+                )
             }), 503
 
-        # Call Gemini API with educational persona
-        prompt = f"{system_prompt}\n\nUser question: {user_query}\n\nProvide educational response with historical context and comparisons:"
-        
+        system_prompt = (
+            "You are a knowledgeable technology historian and educator specializing in "
+            "internet history, network protocols, and computing evolution.\n\n"
+            "Goals:\n"
+            "- Explain clearly and accurately.\n"
+            "- When relevant, compare older technologies to modern equivalents.\n"
+            "- Prefer concise sections or bullet points.\n"
+            "- When it helps, include a small comparison table in plain text "
+            "(columns like THEN | NOW) but keep it under 6 rows.\n\n"
+            "Topics you are especially good at:\n"
+            "- Gopher vs HTTP and the modern Web.\n"
+            "- FTP, Telnet, NNTP vs modern tools.\n"
+            "- ARPANET and early Internet history.\n"
+            "- Evolution of client–server computing.\n\n"
+            "If the question is unrelated to technology or history, gently steer the "
+            "conversation back toward those areas."
+        )
+
+        prompt = (
+            f"{system_prompt}\n\n"
+            f"User question: {user_query}\n\n"
+            "Provide a clear educational answer (about 150–200 words). "
+            "Use short paragraphs or bullet points. "
+            "If comparison helps, add a small THEN vs NOW table in plain text."
+        )
+
+        # ---- Call Gemini ----
         response = client.models.generate_content(
-            model=MODEL_NAME,
+            model=MODEL_NAME2,
             contents=prompt,
             config=types.GenerateContentConfig(
                 temperature=0.7,
                 max_output_tokens=400,
             )
         )
+
+        # ---- Robust extraction of text from Gemini response ----
+        ai_response = getattr(response, "text")
+
         
-        ai_response = response.text
+
+        # Final fallback ONLY if model gave nothing usable
         
+
         return jsonify({'response': ai_response}), 200
-        
+
     except APIError as e:
         app.logger.error(f"Learn endpoint API error: {str(e)}")
-        return jsonify({'error': 'Failed to generate response'}), 500
+        return jsonify({'error': 'Failed to generate response from the archive.'}), 500
     except Exception as e:
         app.logger.error(f"Learn endpoint error: {str(e)}")
-        return jsonify({'error': 'Failed to generate response'}), 500
+        return jsonify({'error': 'Failed to generate response.'}), 500
+
+
 
 
 if __name__ == '__main__':

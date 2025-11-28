@@ -25,45 +25,42 @@ const LearnPage = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!query.trim() || loading) return;
-
-    const userMessage = { 
-      role: 'user', 
-      content: query,
-      timestamp: new Date().toISOString()
-    };
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!query.trim()) return;
+  
+  const userMessage = { role: 'user', content: query };
+  setMessages(prev => [...prev, userMessage]);
+  setQuery('');
+  setLoading(true);
+  setError(null);
+  
+  try {
+    const response = await fetch('http://localhost:5000/api/learn', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query })
+    });
     
-    setMessages(prev => [...prev, userMessage]);
-    setQuery('');
-    setLoading(true);
-    setError(null);
+    if (!response.ok) throw new Error('Failed to get response');
+    
+    const data = await response.json();
+    console.log('Learn API data:', data); // Debug log
+    
+    const assistantMessage = { 
+      role: 'assistant', 
+      content: data.response || 'No response from archive.' 
+    };
+    setMessages(prev => [...prev, assistantMessage]);
+    
+  } catch (err) {
+    setError('Unable to connect to archive. Please try again.');
+    console.error('Learn API error:', err);
+  } finally {
+    setLoading(false);
+  }
+};
 
-    try {
-      const response = await fetch('http://localhost:5000/api/learn', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: query })
-      });
-
-      if (!response.ok) throw new Error('Failed to get response');
-
-      const data = await response.json();
-      const assistantMessage = { 
-        role: 'assistant', 
-        content: data.response,
-        timestamp: new Date().toISOString()
-      };
-      
-      setMessages(prev => [...prev, assistantMessage]);
-    } catch (err) {
-      setError('Unable to connect to the archive. Please try again.');
-      console.error('Learn API error:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {

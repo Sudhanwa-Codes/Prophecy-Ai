@@ -237,6 +237,19 @@ body {
   animation: skull-fade-out 0.8s ease-in forwards;
 }
 
+/* --- MONITOR TITLE (Top of Frame) --- */
+.monitor-title {
+  position: absolut;
+  top: 8%;
+  left: 27%;
+  font-size: 1.3em;
+  color: #00ff41;
+  text-shadow: 0 0 10px #00ff41;
+  font-weight: bold;
+  z-index: 5;
+ 
+}
+
 /* --- REST OF STYLING --- */
 h1 {
   font-size: 1.8em;
@@ -826,4 +839,52 @@ button:hover {
 
 .badge-popup.fade-out {
   animation: fadeOut 0.5s ease-out forwards;
+}
+
+/* --- MONITOR TITLE (Top of Frame) --- */
+.monitor-title {
+  position: absolute;
+  top: 8%;
+  left: 27%;
+  font-size: 1.4em;
+  color: #00ffff;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.9),
+               0 0 40px rgba(0, 255, 255, 0.6),
+               0 0 60px rgba(0, 200, 255, 0.4),
+               0 0 80px rgba(0, 150, 255, 0.2);
+  font-weight: bold;
+  z-index: 5;
+  font-family: 'Consolas', 'Monospace', monospace;
+  animation: titlePulse 3s ease-in-out infinite;
+}
+
+.title-emoji {
+  font-size: 1.1em;
+  display: inline-block;
+  filter: drop-shadow(0 0 15px rgba(138, 43, 226, 0.8));
+  animation: emojiFloat 2s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.9),
+                 0 0 40px rgba(0, 255, 255, 0.6),
+                 0 0 60px rgba(0, 200, 255, 0.4),
+                 0 0 80px rgba(0, 150, 255, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(0, 255, 255, 1),
+                 0 0 60px rgba(0, 255, 255, 0.8),
+                 0 0 90px rgba(0, 200, 255, 0.6),
+                 0 0 120px rgba(0, 150, 255, 0.4);
+  }
+}
+
+@keyframes emojiFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
 }
