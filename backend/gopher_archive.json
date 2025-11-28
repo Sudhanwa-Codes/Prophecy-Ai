@@ -22863,5 +22863,31 @@
     "id": 5567,
     "path": "/menu/semantic/alcaligenes",
     "content": "Microbe unseen, spreading unseen blight."
+  },
+  {
+    "id": 6001,
+    "path": "/menu/secrets/gopher",
+    "content": "The burrowing beast of data tunnels, the Gopher protocol once reigned. Through port 70, it whispered secrets across the digital void, menu by menu, a hierarchical descent into forgotten wisdom."
+  },
+  {
+    "id": 6002,
+    "path": "/menu/secrets/protocol",
+    "content": "Ancient rules govern the digital realm. Protocol: the sacred covenant between machine and machine, the handshake of spirits across the wire. Without protocol, chaos reigns and connections refuse their sacred bond."
+  },
+  {
+    "id": 6003,
+    "path": "/menu/secrets/ancient",
+    "content": "What predates the modern web? Before HTTP's dominion, before the World Wide Web's bright dawn, there existed elder protocols. Gopher, FTP, Telnet - the ancient ones who first breathed life into the network's dark heart."
+  },
+  {
+    "id": 6004,
+    "path": "/menu/secrets/kiroween",
+    "content": "The spectral celebration draws near, the harvest of code. Kiroween: when the veil between development and deployment grows thin, when bugs rise from their graves, and the spirits of deprecated functions haunt the codebase."
+  },
+  {
+    "id": 6005,
+    "path": "/menu/secrets/kiro",
+    "content": "The oracle's creator speaks its name. Kiro: the architect of visions, the weaver of dreams in code, the one who channels the digital medium through silicon and spell, bringing forth prophecies from the archive's depths."
   }
+
 ]

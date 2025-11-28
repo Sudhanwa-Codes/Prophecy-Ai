@@ -178,5 +178,74 @@ def seance_endpoint():
         "interpretation": interpretation
     })
 
+
+@app.route('/api/learn', methods=['POST'])
+def learn_endpoint():
+    """
+    Educational Q&A endpoint with technology comparisons.
+    Provides clear, educational explanations about internet history and protocols.
+    """
+    try:
+        data = request.get_json()
+        user_query = data.get('query', '').strip()
+        
+        if len(user_query) < 4:
+            return jsonify({'error': 'Query too short'}), 400
+
+        # Educational persona with focus on old vs new tech
+        system_prompt = """You are a knowledgeable technology historian and educator specializing in internet history, protocols, and computing evolution.
+
+When answering questions:
+1. Provide clear, educational explanations
+2. Compare old technology with modern equivalents when relevant
+3. Include brief historical context
+4. Explain technical concepts in accessible language
+5. Structure responses with bullet points or sections for clarity
+
+Topics to cover:
+• Gopher protocol (1991) vs HTTP/Web (1993+)
+• Old protocols: FTP, Telnet, NNTP vs modern equivalents
+• Internet evolution: ARPANET → Modern Internet
+• Technology comparisons: Then vs Now
+• Computing history and milestones
+
+Response format:
+- Keep responses 150-200 words
+- Use brief sections or bullet points
+- Include "Then vs Now" comparisons when relevant
+- Be educational but engaging
+- Maintain professional but friendly tone
+
+If asked about unrelated topics, politely redirect to technology/history."""
+
+        if not client:
+            return jsonify({
+                'response': 'The educational archive is currently offline. Please ensure the Gemini API is configured.'
+            }), 503
+
+        # Call Gemini API with educational persona
+        prompt = f"{system_prompt}\n\nUser question: {user_query}\n\nProvide educational response with historical context and comparisons:"
+        
+        response = client.models.generate_content(
+            model=MODEL_NAME,
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                temperature=0.7,
+                max_output_tokens=400,
+            )
+        )
+        
+        ai_response = response.text
+        
+        return jsonify({'response': ai_response}), 200
+        
+    except APIError as e:
+        app.logger.error(f"Learn endpoint API error: {str(e)}")
+        return jsonify({'error': 'Failed to generate response'}), 500
+    except Exception as e:
+        app.logger.error(f"Learn endpoint error: {str(e)}")
+        return jsonify({'error': 'Failed to generate response'}), 500
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

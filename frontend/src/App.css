@@ -660,3 +660,170 @@ button:hover {
 .learn-btn.shaking {
   animation: shake 0.3s infinite;
 }
+
+/* --- EASTER EGG STYLING --- */
+.easter-egg {
+  position: fixed;
+  width: 80px;
+  height: 100px;
+  cursor: pointer;
+  z-index: 999;
+  animation: eggBounceIn 0.8s ease-out;
+  transition: transform 0.2s;
+  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+}
+
+.easter-egg:hover {
+  transform: scale(1.15) rotate(5deg);
+  filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9));
+}
+
+@keyframes eggBounceIn {
+  0% { 
+    transform: translateY(-200px) scale(0) rotate(-180deg); 
+    opacity: 0; 
+  }
+  60% { 
+    transform: translateY(20px) scale(1.1) rotate(10deg); 
+  }
+  100% { 
+    transform: translateY(0) scale(1) rotate(0deg); 
+    opacity: 1; 
+  }
+}
+
+@keyframes eggCollect {
+  0% { 
+    transform: scale(1) rotate(0deg); 
+    opacity: 1; 
+  }
+  50% { 
+    transform: scale(1.5) rotate(180deg); 
+  }
+  100% { 
+    transform: scale(0) rotate(360deg); 
+    opacity: 0; 
+  }
+}
+
+.easter-egg.collecting {
+  animation: eggCollect 0.6s ease-out forwards;
+}
+
+.easter-egg.shaking {
+  animation: shake 0.3s infinite;
+}
+
+/* --- EGG COLLECTION POPUP --- */
+.egg-collect-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.95);
+  border: 3px solid rgba(255, 215, 0, 0.9);
+  color: #FFD700;
+  padding: 30px 50px;
+  border-radius: 12px;
+  font-family: 'Courier New', monospace;
+  z-index: 1001;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.7);
+  animation: popupBounce 0.5s ease-out;
+  text-align: center;
+}
+
+.popup-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+  animation: iconSpin 0.8s ease-out;
+}
+
+.popup-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+}
+
+.popup-badge {
+  font-size: 18px;
+  color: #00ff00;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+}
+
+@keyframes popupBounce {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes iconSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.egg-collect-popup.fade-out {
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* BADGE POPUP STYLES (Purple/Mystical Glow) */
+/* ═══════════════════════════════════════════════════════════ */
+
+.badge-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.95);
+  border: 3px solid rgba(138, 43, 226, 0.9);
+  color: #9370DB;
+  padding: 30px 50px;
+  border-radius: 12px;
+  font-family: 'Courier New', monospace;
+  z-index: 1001;
+  box-shadow: 0 0 40px rgba(138, 43, 226, 0.8),
+              0 0 60px rgba(138, 43, 226, 0.5);
+  animation: popupBounce 0.5s ease-out;
+  text-align: center;
+}
+
+.badge-popup .popup-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+  animation: iconSpin 0.8s ease-out;
+  filter: drop-shadow(0 0 10px rgba(138, 43, 226, 0.8));
+}
+
+.badge-popup .popup-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-shadow: 0 0 15px rgba(138, 43, 226, 0.9);
+  color: #BA55D3;
+}
+
+.badge-popup .popup-badge {
+  font-size: 18px;
+  color: #00ff00;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+}
+
+.badge-popup.fade-out {
+  animation: fadeOut 0.5s ease-out forwards;
+}

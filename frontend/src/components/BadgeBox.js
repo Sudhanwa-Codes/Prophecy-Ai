@@ -1,16 +1,16 @@
 import React from 'react';
 import './BadgeBox.css';
 
-const BadgeBox = ({ unlockedBadges = [], className = '' }) => {
+const BadgeBox = ({ collectedEggs = [], className = '' }) => {
   const badges = [
-    { id: 'gopher', name: 'Gopher', keyword: 'gopher', icon: '🐹' },
-    { id: 'protocol', name: 'Protocol', keyword: 'protocol', icon: '📡' },
-    { id: 'ancient', name: 'Ancient', keyword: 'ancient', icon: '⚱️' },
-    { id: 'kiroween', name: 'Kiroween', keyword: 'kiroween', icon: '🎃' },
-    { id: 'kiro', name: 'Kiro', keyword: 'kiro', icon: '🤖' }
+    { id: 'gopher', name: 'Gopher Seeker', keyword: 'gopher', icon: '🦫' },
+    { id: 'protocol', name: 'Protocol Scholar', keyword: 'protocol', icon: '📜' },
+    { id: 'ancient', name: 'Ancient Wisdom', keyword: 'ancient', icon: '⚱️' },
+    { id: 'kiroween', name: 'Kiroween Spirit', keyword: 'kiroween', icon: '🎃' },
+    { id: 'kiro', name: 'Kiro Champion', keyword: 'kiro', icon: '🏆' }
   ];
 
-  const isUnlocked = (keyword) => unlockedBadges.includes(keyword.toLowerCase());
+  const isUnlocked = (keyword) => collectedEggs.includes(keyword);
 
   return (
     <div className={`badge-container ${className}`}>
@@ -38,10 +38,10 @@ const BadgeBox = ({ unlockedBadges = [], className = '' }) => {
         <div className="badge-progress">
           <div 
             className="progress-bar" 
-            style={{ width: `${(unlockedBadges.length / 5) * 100}%` }}
+            style={{ width: `${(collectedEggs.length / 5) * 100}%` }}
           ></div>
         </div>
-        <div className="badge-count">🥚 {unlockedBadges.length}/5</div>
+        <div className="badge-count">🥚 {collectedEggs.length}/5</div>
       </div>
     </div>
   );
