@@ -1,0 +1,18 @@
+
+  "hooks": [
+    {
+      "id": "python-quality-check",
+      "name": "Python Code Quality Check",
+      "description": "Runs flake8 linting on backend Python files after git commits",
+      "trigger": {
+        "type": "git-post-commit"
+      },
+      "action": {
+        "type": "command",
+        "command": "python",
+        "args": [".kiro/hooks/post_commit.py"]
+      },
+      "enabled": true
+    }
+  ]
+}
